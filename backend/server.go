@@ -6,6 +6,7 @@ import (
 
 	"quantum-blockchain/crypto"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,6 +15,15 @@ var keyPair *crypto.KeyPair
 
 func main() {
 	router := gin.Default()
+
+	// Configure CORS
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 
 	// Generate Quantum-Safe Key
 	router.GET("/generate-key", func(c *gin.Context) {
